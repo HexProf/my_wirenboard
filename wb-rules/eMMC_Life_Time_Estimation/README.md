@@ -32,4 +32,15 @@ MID
 
 Other:
 Samsung KLM8G1GETF-B041 (8GTF4R)
+
+
+Device life time estimation type A: life time estimation for the MLC user partition eraseblocks, provided in steps of 10%, e.g.:
+    0x02 means 10%-20% device life time used.
+Device life time estimation type B: life time estimation for the SLC boot partition eraseblocks, provided in steps of 10%, e.g.:
+    0x02 means 10%-20% device life time used.
+Pre EOL information: overall status for reserved blocks. Possible values are:
+    0x00 - Not defined.
+    0x01 - Normal: consumed less than 80% of the reserved blocks.
+    0x02 - Warning: consumed 80% of the reserved blocks.
+    0x03 - Urgent: consumed 90% of the reserved blocks.
 ```
