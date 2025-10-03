@@ -4,23 +4,8 @@ Wirenboard eMMC Life Time Estimation
 cat /sys/block/mmcblk0/device/manfid        
 cat /sys/block/mmcblk0/device/name            
 
-'008G70	7.3.3E/3 669/1	8 [127:120] = 0x11
-'008GB0	7.3.3E/6 667/1	8 [127:120] = 0x11
-'58A43A	7.4.3G/1G1 1D/L-2GS	8 [127:120] = 0xd6
-'88A19C	7.3.4B/2 679	8 [127:120] = 0x88
-'88A398	7.3.4L/4 1D/E-1G	8 [127:120] = 0xd6
-'AJTD4R	8.4.4D/2G 1.2C-2G	8 [127:120] = 0x15
-'AS08FC	7.3A_Test 637	8 [127:120] = 0x52
-!CJTD4R	7.3.3B/4 648	8 [127:120] = 0x15
 CS004	7.3.4E/7 1D/A	NULL
-DG4008	7.3B/1 637	8 [127:120] = 0x45
-IX2964	7.3B/2GI 633	8 [127:120] = 0x70
-JS08AC	7.3.4K/3 1D/E-1G	8 [127:120] = 0xf2
-MMC64G	7.3B/2GC 636	8 [127:120] = 0x32
 Q2J55L	7.2.1A 576	NULL
-SLD64G	7.3.4B/3 677	8 [127:120] = 0x88
-
-0x11    
 
 MID
 0x11  Toshiba/Kioxia
@@ -29,6 +14,10 @@ MID
 0x15    Samsung
     AJTD4R    16G    KLMAG1JETD-B041
     CJTD4R    64G
+0x32
+    MMC64G    64G
+0x45
+    DG4008
 0xD6    FORESEE
     58A43A    16G    FEMDRM016G-58A43
     88A398    8G     FEMDMW008G-88A39
@@ -37,6 +26,13 @@ MID
     88A19D    128G   FEMDRW128G-88A19 
 0x52    Alliance Memory
     AS08FC    8G     ASFC8G31M-51BIN
+0x70
+    IX2964
+0x88
+    SLD64G    64G
+0xF2
+    JS08AC
+
 
 
 
