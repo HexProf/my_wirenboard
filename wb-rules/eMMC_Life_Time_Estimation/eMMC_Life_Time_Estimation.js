@@ -1,3 +1,7 @@
+/* 
+* (c) 2025, Evgeniy (hexprof) Sitnikov
+*/
+
 var EdevName = 'emmc';
 defineVirtualDevice(EdevName, {
   title: 'eMMC Life Time Estimation',
