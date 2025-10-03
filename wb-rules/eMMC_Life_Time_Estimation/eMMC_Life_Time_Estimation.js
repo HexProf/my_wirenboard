@@ -21,12 +21,35 @@ defineVirtualDevice(EdevName, {
         type: "text",
         value: " "
        },
+      WBBATCH: {
+        title: "WB Batch",
+        type: "text",
+        value: " "
+       },
+      WBVER: {
+        title: "WB Version",
+        type: "text",
+        value: " "
+       },
+      MANFID: {
+        title: "eMMC ManfID",
+        type: "text",
+        value: " "
+       },
+      MANFID: {
+        title: "eMMC ManfID",
+        type: "text",
+        value: " "
+       },
+      NAME: {
+        title: "eMMC Name",
+        type: "text",
+        value: " "
+       },
    },
 });
 
-defineRule(EdevName + "_cront", {
-  when: cron("@every 12h"),
-  then: function () {    
+function update_values() {
     runShellCommand("/usr/bin/mmc extcsd read /dev/mmcblk0 | /usr/bin/grep 'EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A' | /usr/bin/grep -o '....$'", { captureOutput: true,
       exitCallback: function (exitCode, capturedOutput) {
         dev[EdevName + "/ESTA"] = capturedOutput;    
@@ -42,5 +65,26 @@ defineRule(EdevName + "_cront", {
         dev[EdevName + "/EOLI"] = capturedOutput;    
       },
     });
+    dev[EdevName + "/WBBATCH"] = dev["system/Batch No"];
+    dev[EdevName + "/WBVER"] = dev["system/DTS Version"];
+    runShellCommand("cat /sys/block/mmcblk0/device/manfid", { captureOutput: true,
+      exitCallback: function (exitCode, capturedOutput) {
+        dev[EdevName + "/MANFID"] = capturedOutput;    
+      },
+    });
+    runShellCommand("cat /sys/block/mmcblk0/device/name", { captureOutput: true,
+      exitCallback: function (exitCode, capturedOutput) {
+        dev[EdevName + "/NAME"] = capturedOutput;    
+      },
+    });
+}
+
+// Обновляем при запуске правила
+update_values();
+
+defineRule(EdevName + "_cront", {
+  when: cron("@every 12h"),
+  then: function () {    
+      update_values();
   },
 });
