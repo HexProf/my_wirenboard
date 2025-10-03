@@ -36,11 +36,6 @@ defineVirtualDevice(EdevName, {
         type: "text",
         value: " "
        },
-      MANFID: {
-        title: "eMMC ManfID",
-        type: "text",
-        value: " "
-       },
       NAME: {
         title: "eMMC Name",
         type: "text",
