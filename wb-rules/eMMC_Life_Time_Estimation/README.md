@@ -5,7 +5,7 @@ cat /sys/block/mmcblk0/device/manfid
 cat /sys/block/mmcblk0/device/name            
 
 CS004	7.3.4E/7 1D/A	NULL
-Q2J55L	7.2.1A 576	NULL
+Micron Q2J55L	7.2.1A 576	NULL
 
 MID
 0x11  Toshiba/Kioxia
