@@ -58,6 +58,7 @@ function emmc_start() {
           case 0x2C: { s_emmc_manfid = "Kingston"; break; };
           case 0x37: { s_emmc_manfid = "KingMax"; break; };
           case 0x44: { s_emmc_manfid = "ATP"; break; };
+		  case 0x45: { s_emmc_manfid = "SanDisk"; break; };
           case 0x52: { s_emmc_manfid = "Alliance"; break; };
           case 0x70: { s_emmc_manfid = "Kingston"; break; };
           case 0x88: { s_emmc_manfid = "FORESEE/Longsys"; break; };
@@ -146,7 +147,11 @@ function emmc_start() {
       case "03E008": { s_emmc_name = "DS55B08D5A2-EA"; break; }
       case "03E032": { s_emmc_name = "DS55B32D5A1-EA"; break; }
       case "03E064": { s_emmc_name = "DS55B64D5A1-EA"; break; }
-     default: { s_emmc_name = st_emmc_name; break; }
+      case "DG4008": { s_emmc_name = "iNAND 7250 SDINBDG4-8G"; break; }
+      case "DG4016": { s_emmc_name = "iNAND 7250 SDINBDG4-16G"; break; }
+      case "DG4032": { s_emmc_name = "iNAND 7250 SDINBDG4-32G"; break; }
+      case "DG4064": { s_emmc_name = "iNAND 7250 SDINBDG4-64G"; break; }			
+      default: { s_emmc_name = st_emmc_name; break; }
     } 
   },
   });  
