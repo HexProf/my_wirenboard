@@ -65,6 +65,7 @@ function emmc_start() {
           case 0x90: { s_emmc_manfid = "SkHynix"; break; };
           case 0xD6: { s_emmc_manfid = "FORESEE/Longsys"; break; };
           case 0xE5: { s_emmc_manfid = "Dosilicon"; break; };
+		  case 0xEA: { s_emmc_manfid = "ZETTA"; break; };
           case 0xF2: { s_emmc_manfid = "JSC"; break; };
           case 0xFE: { s_emmc_manfid = "Micron"; break; };
 
@@ -151,6 +152,7 @@ function emmc_start() {
       case "DG4016": { s_emmc_name = "iNAND 7250 SDINBDG4-16G"; break; }
       case "DG4032": { s_emmc_name = "iNAND 7250 SDINBDG4-32G"; break; }
       case "DG4064": { s_emmc_name = "iNAND 7250 SDINBDG4-64G"; break; }
+	  case "SPeMMC": { s_emmc_name = "ZDEMMC0xGA"; break; }
      default: { s_emmc_name = st_emmc_name; break; }
     } 
   },
