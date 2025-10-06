@@ -58,7 +58,7 @@ function emmc_start() {
           case 0x2C: { s_emmc_manfid = "Kingston"; break; };
           case 0x37: { s_emmc_manfid = "KingMax"; break; };
           case 0x44: { s_emmc_manfid = "ATP"; break; };
-		  case 0x45: { s_emmc_manfid = "SanDisk"; break; };
+          case 0x45: { s_emmc_manfid = "SanDisk"; break; };
           case 0x52: { s_emmc_manfid = "Alliance"; break; };
           case 0x70: { s_emmc_manfid = "Kingston"; break; };
           case 0x88: { s_emmc_manfid = "FORESEE/Longsys"; break; };
@@ -115,7 +115,7 @@ function emmc_start() {
       exitCallback: function (exitCode, capturedOutput) {
         var i_emmc_eol = parseInt(capturedOutput, 16);    
         switch(i_emmc_eol){
-          case 0x00: {s_emmc_eol = "Fine: consumed 100% of the reserved blocks"; break; b_emmc_eol = false;}
+          case 0x00: {s_emmc_eol = "Fine: consumed 0% of the reserved blocks"; break; b_emmc_eol = false;}
           case 0x01: {s_emmc_eol = "Normal: consumed less than 80% of the reserved blocks"; break; b_emmc_eol = false; break;}
           case 0x02: {s_emmc_eol = "Warning: consumed 80% of the reserved blocks"; break; b_emmc_eol = true; break;}
           case 0x03: {s_emmc_eol = "Urgent: consumed 90% of the reserved blocks"; break; b_emmc_eol = true; break;}
@@ -150,8 +150,8 @@ function emmc_start() {
       case "DG4008": { s_emmc_name = "iNAND 7250 SDINBDG4-8G"; break; }
       case "DG4016": { s_emmc_name = "iNAND 7250 SDINBDG4-16G"; break; }
       case "DG4032": { s_emmc_name = "iNAND 7250 SDINBDG4-32G"; break; }
-      case "DG4064": { s_emmc_name = "iNAND 7250 SDINBDG4-64G"; break; }			
-      default: { s_emmc_name = st_emmc_name; break; }
+      case "DG4064": { s_emmc_name = "iNAND 7250 SDINBDG4-64G"; break; }
+     default: { s_emmc_name = st_emmc_name; break; }
     } 
   },
   });  
@@ -197,19 +197,21 @@ dev["emmc2/esta#error"] = "notready";
 dev["emmc2/estb#error"] = "notready";
 dev["emmc2/eol#error"] = "notready";
 
-defineRule("emmc2_cron1s", {
+var vemmc2_cron1s = defineRule("emmc2_cron1s", {
   when: cron("@every 1s"),
   then: function () {    
     emmc_start();
     if((dev["emmc2/id#error"] == "") && (dev["emmc2/esta#error"] == "") && (dev["emmc2/estb#error"] == "") && (dev["emmc2/eol#error"] == "")){
-      disableRule("emmc2_cron1s");
+      disableRule(vemmc2_cron1s);
     }
   },
 })
-defineRule("emmc2_cron12h", {
+var vemmc2_cron12h = defineRule("emmc2_cron12h", {
   when: cron("@every 12h"),
   then: function () {    
     emmc_start();
   },
 })
+
+
 
