@@ -1,5 +1,6 @@
 /* 
 * (c) 2025, Evgeniy (hexprof) Sitnikov
+* v 2025.10.07
 */
 
 var s_emmc_manfid = "";
@@ -10,12 +11,14 @@ var s_emmc_eol = "";
 var b_emmc_esta = false;
 var b_emmc_estb = false;
 var b_emmc_eol = false;
+var i_emmc_manfid = 0;
+var st_emmc_name = "";
 
 defineVirtualDevice("emmc2", {
-  title: "eMMC v2 Life Time Estimation",
+  title: "Износ eMMC",
   cells: {
 	id: {
-        title: "eMMC Chip",
+        title: "eMMC",
 	    type: "text",
 	    value: "",
         readonly: true,
@@ -45,8 +48,8 @@ defineVirtualDevice("emmc2", {
 function emmc_start() {
       runShellCommand("cat /sys/block/mmcblk0/device/manfid", { captureOutput: true,
       exitCallback: function (exitCode, capturedOutput) {
-        var i_emmc_manfid = parseInt(capturedOutput, 16);
-        s_emmc_manfid = capturedOutput;
+        i_emmc_manfid = parseInt(capturedOutput, 16);
+        var st_emmc_manfid = capturedOutput;
         switch(i_emmc_manfid){
           case 0x00: { s_emmc_manfid = "SanDisk"; break; };
           case 0x01: { s_emmc_manfid = "Cypress/SkHynix/SkyHigh"; break; };
@@ -63,15 +66,16 @@ function emmc_start() {
           case 0x70: { s_emmc_manfid = "Kingston"; break; };
           case 0x88: { s_emmc_manfid = "FORESEE/Longsys"; break; };
           case 0x90: { s_emmc_manfid = "SkHynix"; break; };
+          case 0xAD: { s_emmc_manfid = "Xincun"; break; };
           case 0xD6: { s_emmc_manfid = "FORESEE/Longsys"; break; };
           case 0xE5: { s_emmc_manfid = "Dosilicon"; break; };
-		  case 0xEA: { s_emmc_manfid = "ZETTA"; break; };
+          case 0xEA: { s_emmc_manfid = "Zetta/MKFounder"; break; };
+          case 0xEC: { s_emmc_manfid = "Rayson"; break; };
           case 0xF2: { s_emmc_manfid = "JSC"; break; };
           case 0xFE: { s_emmc_manfid = "Micron"; break; };
-
-          default: {s_emmc_manfid = "UNKNOWN " + s_emmc_manfid; break;}
+          default: {s_emmc_manfid = "UNKNOWN"; break;}
         }
-         
+         s_emmc_manfid = st_emmc_manfid + " " + s_emmc_manfid;
       },
     }); 
     runShellCommand("/usr/bin/mmc extcsd read /dev/mmcblk0 | /usr/bin/grep 'EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A' | /usr/bin/grep -o '....$'", { captureOutput: true,
@@ -116,53 +120,111 @@ function emmc_start() {
       exitCallback: function (exitCode, capturedOutput) {
         var i_emmc_eol = parseInt(capturedOutput, 16);    
         switch(i_emmc_eol){
-          case 0x00: {s_emmc_eol = "Fine: consumed 0% of the reserved blocks"; break; b_emmc_eol = false;}
-          case 0x01: {s_emmc_eol = "Normal: consumed less than 80% of the reserved blocks"; break; b_emmc_eol = false; break;}
-          case 0x02: {s_emmc_eol = "Warning: consumed 80% of the reserved blocks"; break; b_emmc_eol = true; break;}
-          case 0x03: {s_emmc_eol = "Urgent: consumed 90% of the reserved blocks"; break; b_emmc_eol = true; break;}
-          default: {s_emmc_estb = "Fatal: consumed 100% of the reserved blocks"; break; b_emmc_eol = true;}
+          case 0x00: {s_emmc_eol = "Отлично: 0% резервных блоков"; break; b_emmc_eol = false;}
+          case 0x01: {s_emmc_eol = "Нормально: менее 80% резервных блоков"; break; b_emmc_eol = false; break;}
+          case 0x02: {s_emmc_eol = "Опасно: 80% резервных блоков"; break; b_emmc_eol = true; break;}
+          case 0x03: {s_emmc_eol = "Очень опасно: 90% резервных блоков"; break; b_emmc_eol = true; break;}
+          default: {s_emmc_estb = "Фатально: 100% резервных блоков"; break; b_emmc_eol = true;}
         }
       },
     });
-  runShellCommand("cat /sys/block/mmcblk0/device/name", { captureOutput: true, exitCallback: function (exitCode, capturedOutput) 
-  {
-    var st_emmc_name = capturedOutput.toString().trim();
-    switch(st_emmc_name){
-      case "008G70": { s_emmc_name = "THGBMFG6C1LBAIL"; break; }
-      case "008GB0": { s_emmc_name = "THGBMJG6C1LBAIL"; break; }
-      case "AJTD4R": { s_emmc_name = "KLMAG1JETD-B041"; break; }
-      case "58A43A": { s_emmc_name = "FEMDRM016G-58A43"; break; }
-      case '88A398': { s_emmc_name = "FEMDMW008G-88A39"; break; }
-      case "88A19B": { s_emmc_name = "FEMDRW032G-88A19"; break; }
-      case "88A19C": { s_emmc_name = "FEMDRW064G-88A19"; break; }
-      case "88A19D": { s_emmc_name = "FEMDRW128G-88A19"; break; }
-      case "AS08FC": { s_emmc_name = "ASFC8G31M-51BIN"; break; }
-      case "IX2932": { s_emmc_name = "EMMC32G-IX29-8AC01"; break; }
-      case "IX2964": { s_emmc_name = "EMMC64G-IX29-8AC01"; break; }
-      case "IX9128": { s_emmc_name = "EMMC128-IX29-8AC01"; break; }
-      case "MT3204": { s_emmc_name = "EMMC04G-MT32-01G00"; break; }
-      case "SLD32G": { s_emmc_name = "FSEIASLD-32G"; break; }
-      case "SLD64G": { s_emmc_name = "FSEIASLD-64G"; break; }
-      case "SLD128": { s_emmc_name = "FSEIASLD-128G"; break; }
-      case "JS08AC": { s_emmc_name = "JSMC08AUM1ASAEA-H5-SU"; break; }
-      case "03E008": { s_emmc_name = "DS55B08D5A2-EA"; break; }
-      case "03E032": { s_emmc_name = "DS55B32D5A1-EA"; break; }
-      case "03E064": { s_emmc_name = "DS55B64D5A1-EA"; break; }
-      case "DG4008": { s_emmc_name = "iNAND 7250 SDINBDG4-8G"; break; }
-      case "DG4016": { s_emmc_name = "iNAND 7250 SDINBDG4-16G"; break; }
-      case "DG4032": { s_emmc_name = "iNAND 7250 SDINBDG4-32G"; break; }
-      case "DG4064": { s_emmc_name = "iNAND 7250 SDINBDG4-64G"; break; }
-	  case "SPeMMC": { s_emmc_name = "ZDEMMC0xGA"; break; }
-     default: { s_emmc_name = st_emmc_name; break; }
-    } 
-  },
-  });  
+  runShellCommand("cat /sys/block/mmcblk0/device/name", { captureOutput: true, exitCallback: function (exitCode, capturedOutput) { s_emmc_name = capturedOutput.toString().trim(); } });
+
   if((s_emmc_manfid == "") || (s_emmc_name == "") || (s_emmc_manfid == null) || (s_emmc_name == null)) {
     dev["emmc2/id"] = "Not ready";
     dev["emmc2/id#error"] = "notready";
   }
   else{
-    dev["emmc2/id"] = s_emmc_manfid + " " + s_emmc_name;
+    var s_res_emmc_name;
+    if((i_emmc_manfid == 0x00) && (s_emmc_name == "000000")) { s_res_emmc_name = "Unknown";}
+
+    // Toshiba
+    else if ((i_emmc_manfid == 0x11) && (s_emmc_name == "008G70")) { s_res_emmc_name = "Toshiba THGBMFG6C1LBAIL";}
+    else if ((i_emmc_manfid == 0x11) && (s_emmc_name == "008GB0")) { s_res_emmc_name = "Toshiba THGBMJG6C1LBAIL";}
+
+    // Micron
+    else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J55A")) { s_res_emmc_name = "Micron MTFC8GACAENS";}
+    else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J56L")) { s_res_emmc_name = "Micron MTFC16GAKAECN";}
+    else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J57L")) { s_res_emmc_name = "Micron MTFC32GAKAECN";}
+    else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J58E")) { s_res_emmc_name = "Micron MTFC64GAJAEDN";}
+    else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J59E")) { s_res_emmc_name = "Micron MTFC128GAJAEDN";}
+
+    // Samsung
+    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "AJTD4R")) { s_res_emmc_name = "Samsung KLMAG1JETD-B041";}
+    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M1G1CC")) { s_res_emmc_name = "Samsung KLM1G1CEHC-B101";}
+    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M2G1DE")) { s_res_emmc_name = "Samsung KLM2G1DEHE-B101";}
+    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M8G1DE")) { s_res_emmc_name = "Samsung KLM8G4DEHE-B101";}
+    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "MAG1DE")) { s_res_emmc_name = "Samsung KLMAG8DEHE-A101";}
+
+    // SanDisk
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4008")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-8G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4016")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-16G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4032")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-32G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4064")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-64G";}
+
+    // Alliance
+    else if ((i_emmc_manfid == 0x52) && (s_emmc_name == "AS08FC")) { s_res_emmc_name = "Alliance ASFC8G31M-51BIN";}
+
+    // Kingston
+    else if ((i_emmc_manfid == 0x70) && (s_emmc_name == "IX2932")) { s_res_emmc_name = "Kingston EMMC32G-IX29-8AC01";}
+    else if ((i_emmc_manfid == 0x70) && (s_emmc_name == "IX2964")) { s_res_emmc_name = "Kingston EMMC64G-IX29-8AC01";}
+    else if ((i_emmc_manfid == 0x70) && (s_emmc_name == "IX9128")) { s_res_emmc_name = "Kingston EMMC128-IX29-8AC01";}
+    else if ((i_emmc_manfid == 0x70) && (s_emmc_name == "MT3204")) { s_res_emmc_name = "Kingston EMMC04G-MT32-01G00";}
+    else if ((i_emmc_manfid == 0x70) && (s_emmc_name == "WT3204")) { s_res_emmc_name = "Kingston EMMC04G-WT32-01G10";}
+    else if ((i_emmc_manfid == 0x70) && (s_emmc_name == "W62704")) { s_res_emmc_name = "Kingston EMMC04G-W627-X03U";}
+
+    // FORESEE/Longsys
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19B")) { s_res_emmc_name = "FORESEE/Longsys FEMDRW032G-88A19";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19C")) { s_res_emmc_name = "FORESEE/Longsys FEMDRW064G-88A19";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19D")) { s_res_emmc_name = "FORESEE/Longsys FEMDRW128G-88A19";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "SLD32G")) { s_res_emmc_name = "FORESEE/Longsys FSEIASLD-32G";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "SLD64G")) { s_res_emmc_name = "FORESEE/Longsys FSEIASLD-64G";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "SLD128")) { s_res_emmc_name = "FORESEE/Longsys FSEIASLD-128G";}
+
+    // Hynix
+    else if ((i_emmc_manfid == 0x90) && (s_emmc_name == "H4G1d")) { s_res_emmc_name = "Hynix H26M31003GPR";}
+    else if ((i_emmc_manfid == 0x90) && (s_emmc_name == "HAG2e")) { s_res_emmc_name = "Hynix H26M52003EQR";}
+    else if ((i_emmc_manfid == 0x90) && (s_emmc_name == "H8G4a2")) { s_res_emmc_name = "Hynix H26M41208HPR";}
+    else if ((i_emmc_manfid == 0x90) && (s_emmc_name == "HAG4a2")) { s_res_emmc_name = "Hynix H26M52208FPR";}
+    else if ((i_emmc_manfid == 0x90) && (s_emmc_name == "HBG4a2")) { s_res_emmc_name = "Hynix H26M64208EMR";}
+    else if ((i_emmc_manfid == 0x90) && (s_emmc_name == "HCG4a2")) { s_res_emmc_name = "Hynix H26M78208CMR";}
+
+    // Rayson
+    else if ((i_emmc_manfid == 0xAC) && (s_emmc_name == "AT2S")) { s_res_emmc_name = "Rayson RS70B04G4S03F";}
+
+    // Macronix
+    else if ((i_emmc_manfid == 0xC2) && (s_emmc_name == "M02B12")) { s_res_emmc_name = "Macronix MX52ML02B12";}
+    else if ((i_emmc_manfid == 0xC2) && (s_emmc_name == "M02A11")) { s_res_emmc_name = "Macronix MX52ML02B11";}
+    else if ((i_emmc_manfid == 0xC2) && (s_emmc_name == "M04A11")) { s_res_emmc_name = "Macronix MX52ML04A11";}
+    else if ((i_emmc_manfid == 0xC2) && (s_emmc_name == "M08A11")) { s_res_emmc_name = "Macronix MX52ML08A11";}
+
+    // FORESEE/Longsys
+    else if ((i_emmc_manfid == 0xD6) && (s_emmc_name == "58A43A")) { s_res_emmc_name = "FORESEE/Longsys FEMDRM016G-58A43";}
+    else if ((i_emmc_manfid == 0xD6) && (s_emmc_name == "88A398")) { s_res_emmc_name = "FORESEE/Longsys FEMDMW008G-88A39";}
+
+    // Dosilicon
+    else if ((i_emmc_manfid == 0xE5) && (s_emmc_name == "03E008")) { s_res_emmc_name = "Dosilicon DS55B08D5A2-EA";}
+    else if ((i_emmc_manfid == 0xE5) && (s_emmc_name == "03E032")) { s_res_emmc_name = "Dosilicon DS55B32D5A1-EA";}
+    else if ((i_emmc_manfid == 0xE5) && (s_emmc_name == "03E064")) { s_res_emmc_name = "Dosilicon DS55B64D5A1-EA";}
+
+    // Zetta/MKFounder
+    else if ((i_emmc_manfid == 0xEA) && (s_emmc_name == "SPeMMC")) { s_res_emmc_name = "Zetta ZDEMMC0xGA";}
+    else if ((i_emmc_manfid == 0xEA) && (s_emmc_name == "911000")) { s_res_emmc_name = "MKFounder MKEV016GIB-OY500";}
+
+    // JSC
+    else if ((i_emmc_manfid == 0xF2) && (s_emmc_name == "JS08AC")) { s_res_emmc_name = "JSC JSMC08AUM1ASAEA-H5-SU";}
+
+    // Micron
+    else if ((i_emmc_manfid == 0xFE) && (s_emmc_name == "MMC02G")) { s_res_emmc_name = "Micron MTFC2GMDEA-0M WT";}
+    else if ((i_emmc_manfid == 0xFE) && (s_emmc_name == "MMC04G")) { s_res_emmc_name = "Micron MTFC4GMDEA-1M WT";}
+    else if ((i_emmc_manfid == 0xFE) && (s_emmc_name == "MMC08G")) { s_res_emmc_name = "Micron MTFC8GLDEA-1M WT";}
+    else if ((i_emmc_manfid == 0xFE) && (s_emmc_name == "MMC16G")) { s_res_emmc_name = "Micron MTFC16GJDEC-2M WT";}
+    else if ((i_emmc_manfid == 0xFE) && (s_emmc_name == "MMC32G")) { s_res_emmc_name = "Micron MTFC32GJDED-3M WT";}
+    else if ((i_emmc_manfid == 0xFE) && (s_emmc_name == "MMC64G")) { s_res_emmc_name = "Micron MTFC64GJDDN-3M WT";}
+
+    else { s_res_emmc_name = s_emmc_manfid + " " + s_emmc_name;}
+    
+    dev["emmc2/id"] = s_res_emmc_name;
     dev["emmc2/id#error"] = "";
   }
   if((s_emmc_esta == "") || (s_emmc_esta == null)){
@@ -170,21 +232,21 @@ function emmc_start() {
     dev["emmc2/esta#error"] = "notready";
   } 
   else{
-    getControl("emmc2/esta").setTitle(s_emmc_esta + " MLC user partition life time");
+    getControl("emmc2/esta").setTitle(s_emmc_esta + " износ раздела данных MLC");
     dev["emmc2/esta"] = b_emmc_esta;
     dev["emmc2/esta#error"] = "";
   }
   if((s_emmc_estb == "") || (s_emmc_estb == null)){
-    getControl("emmc2/estb").setTitle("Not ready");
+    getControl("emmc2/estb").setTitle("Не готов");
     dev["emmc2/estb#error"] = "notready";
   } 
   else{
-    getControl("emmc2/estb").setTitle(s_emmc_estb + " SLC boot partition life time");
+    getControl("emmc2/estb").setTitle(s_emmc_estb + " износ загрузочного раздела SLC");
     dev["emmc2/estb"] = b_emmc_estb;
     dev["emmc2/estb#error"] = "";
   }
   if((s_emmc_eol == "") || (s_emmc_eol == null)){
-    getControl("emmc2/eol").setTitle("Not ready");
+    getControl("emmc2/eol").setTitle("Не готов");
     dev["emmc2/eol#error"] = "notready";
   } 
   else{
@@ -214,6 +276,3 @@ var vemmc2_cron12h = defineRule("emmc2_cron12h", {
     emmc_start();
   },
 })
-
-
-
