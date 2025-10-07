@@ -10,11 +10,7 @@ cat /sys/block/mmcblk0/device/name
 Unsorted:
 CS004	7.3.4E/7 1D/A	NULL
 Micron Q2J55L	7.2.1A 576	NULL
-0x15    Samsung    CJTD4R    64G
 0x32    MMC64G    64G
-
-Other:
-Samsung KLM8G1GETF-B041 (8GTF4R)
 
 Legend:
 Device life time estimation type A: life time estimation for the MLC user partition eraseblocks, provided in steps of 10%, e.g.:
