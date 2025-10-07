@@ -156,6 +156,7 @@ function emmc_start() {
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M2G1DE")) { s_res_emmc_name = "Samsung KLM2G1DEHE-B101";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M8G1DE")) { s_res_emmc_name = "Samsung KLM8G4DEHE-B101";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "MAG1DE")) { s_res_emmc_name = "Samsung KLMAG8DEHE-A101";}
+    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "8GTF4R")) { s_res_emmc_name = "Samsung KLM8G1GETF-B041";}
 
     // SanDisk
     else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4008")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-8G";}
