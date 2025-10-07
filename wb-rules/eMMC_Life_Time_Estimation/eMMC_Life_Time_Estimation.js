@@ -151,6 +151,7 @@ function emmc_start() {
 
     // Samsung
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "AJTD4R")) { s_res_emmc_name = "Samsung KLMAG1JETD-B041";}
+    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "CJTD4R")) { s_res_emmc_name = "Samsung KLMCG4JETD-B041";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M1G1CC")) { s_res_emmc_name = "Samsung KLM1G1CEHC-B101";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M2G1DE")) { s_res_emmc_name = "Samsung KLM2G1DEHE-B101";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M8G1DE")) { s_res_emmc_name = "Samsung KLM8G4DEHE-B101";}
