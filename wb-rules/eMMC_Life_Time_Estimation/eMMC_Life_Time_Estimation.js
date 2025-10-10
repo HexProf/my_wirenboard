@@ -1,6 +1,6 @@
 /* 
 * (c) 2025, Evgeniy (hexprof) Sitnikov
-* v 2025.10.07
+* v 2025.10.10
 */
 
 var s_emmc_manfid = "";
@@ -44,6 +44,29 @@ defineVirtualDevice("emmc2", {
     },
   }
 })
+function est_str_perc(i_est) {
+  var s_emmc_est;
+  switch(i_est){
+    case 0x00: {s_emmc_est = "0%-10%"; break;}
+    case 0x01: {s_emmc_est = "0%-10%"; break;}
+    case 0x02: {s_emmc_est = "10%-20%"; break;}
+    case 0x03: {s_emmc_est = "20%-30%"; break;}
+    case 0x04: {s_emmc_est = "30%-40%"; break;}
+    case 0x05: {s_emmc_est = "40%-50%"; break;}
+    case 0x06: {s_emmc_est = "50%-60%"; break;}
+    case 0x07: {s_emmc_est = "60%-70%"; break;}
+    case 0x08: {s_emmc_est = "70%-80%"; break;}
+    case 0x09: {s_emmc_est = "80%-90%"; break;}
+    case 0x0A: {s_emmc_est = "90%-100%"; break;}
+    default: {s_emmc_est = "100%"; break;}
+  }
+  return s_emmc_est;
+}
+
+function est_bool(i_est) {
+  if (i_est >= 0x06) return true;
+  return false;
+}
 
 function emmc_start() {
       runShellCommand("cat /sys/block/mmcblk0/device/manfid", { captureOutput: true,
@@ -78,45 +101,21 @@ function emmc_start() {
          s_emmc_manfid = st_emmc_manfid + " " + s_emmc_manfid;
       },
     }); 
-    runShellCommand("/usr/bin/mmc extcsd read /dev/mmcblk0 | /usr/bin/grep 'EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A' | /usr/bin/grep -o '....$'", { captureOutput: true,
+    runShellCommand("cat /sys/class/block/mmcblk0/device/life_time", { captureOutput: true,
       exitCallback: function (exitCode, capturedOutput) {
-        var i_emmc_esta = parseInt(capturedOutput, 16);
-        switch(i_emmc_esta){
-          case 0x00: {s_emmc_esta = "0%-10%"; b_emmc_esta = false; break;}
-          case 0x01: {s_emmc_esta = "0%-10%"; b_emmc_esta = false; break;}
-          case 0x02: {s_emmc_esta = "10%-20%"; b_emmc_esta = false; break;}
-          case 0x03: {s_emmc_esta = "20%-30%"; b_emmc_esta = false; break;}
-          case 0x04: {s_emmc_esta = "30%-40%"; b_emmc_esta = false; break;}
-          case 0x05: {s_emmc_esta = "40%-50%"; b_emmc_esta = false; break;}
-          case 0x06: {s_emmc_esta = "50%-60%"; b_emmc_esta = true; break;}
-          case 0x07: {s_emmc_esta = "60%-70%"; b_emmc_esta = true; break;}
-          case 0x08: {s_emmc_esta = "70%-80%"; b_emmc_esta = true; break;}
-          case 0x09: {s_emmc_esta = "80%-90%"; b_emmc_esta = true; break;}
-          case 0x0A: {s_emmc_esta = "90%-100%"; b_emmc_esta = true; break;}
-          default: {s_emmc_esta = "100%"; b_emmc_esta = true; break;}
-        }
+        log(capturedOutput);
+        var s_emmc_est = capturedOutput.split(" ");
+        log(s_emmc_est)
+        var i_emmc_esta = parseInt(s_emmc_est[0], 16);
+        s_emmc_esta = est_str_perc(i_emmc_esta);
+        b_emmc_esta = est_bool(i_emmc_esta);
+        var i_emmc_estb = parseInt(s_emmc_est[1], 16);
+        s_emmc_estb = est_str_perc(i_emmc_estb);
+        b_emmc_estb = est_bool(i_emmc_estb);
       },
     });
-    runShellCommand("/usr/bin/mmc extcsd read /dev/mmcblk0 | /usr/bin/grep 'EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B' | /usr/bin/grep -o '....$'", { captureOutput: true,
-      exitCallback: function (exitCode, capturedOutput) {
-        var i_emmc_estb = parseInt(capturedOutput, 16);    
-        switch(i_emmc_estb){
-          case 0x00: {s_emmc_estb = "0%-10%"; b_emmc_estb = false; break;}
-          case 0x01: {s_emmc_estb = "0%-10%"; b_emmc_estb = false; break;}
-          case 0x02: {s_emmc_estb = "10%-20%"; b_emmc_estb = false; break;}
-          case 0x03: {s_emmc_estb = "20%-30%"; b_emmc_estb = false; break;}
-          case 0x04: {s_emmc_estb = "30%-40%"; b_emmc_estb = false; break;}
-          case 0x05: {s_emmc_estb = "40%-50%"; b_emmc_estb = false; break;}
-          case 0x06: {s_emmc_estb = "50%-60%"; b_emmc_estb = true; break;}
-          case 0x07: {s_emmc_estb = "60%-70%"; b_emmc_estb = true; break;}
-          case 0x08: {s_emmc_estb = "70%-80%"; b_emmc_estb = true; break;}
-          case 0x09: {s_emmc_estb = "80%-90%"; b_emmc_estb = true; break;}
-          case 0x0A: {s_emmc_estb = "90%-100%"; b_emmc_estb = true; break;}
-          default: {s_emmc_estb = "100%"; b_emmc_estb = true; break;}
-        }
-      },
-    });
-    runShellCommand("/usr/bin/mmc extcsd read /dev/mmcblk0 | /usr/bin/grep 'EXT_CSD_PRE_EOL_INFO' | /usr/bin/grep -o '....$'", { captureOutput: true,
+  
+    runShellCommand("cat /sys/class/block/mmcblk0/device/pre_eol_info", { captureOutput: true,
       exitCallback: function (exitCode, capturedOutput) {
         var i_emmc_eol = parseInt(capturedOutput, 16);    
         switch(i_emmc_eol){
@@ -156,7 +155,6 @@ function emmc_start() {
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M2G1DE")) { s_res_emmc_name = "Samsung KLM2G1DEHE-B101";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M8G1DE")) { s_res_emmc_name = "Samsung KLM8G4DEHE-B101";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "MAG1DE")) { s_res_emmc_name = "Samsung KLMAG8DEHE-A101";}
-    else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "8GTF4R")) { s_res_emmc_name = "Samsung KLM8G1GETF-B041";}
 
     // SanDisk
     else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4008")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-8G";}
@@ -278,3 +276,5 @@ var vemmc2_cron12h = defineRule("emmc2_cron12h", {
     emmc_start();
   },
 })
+
+
