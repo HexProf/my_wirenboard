@@ -174,9 +174,9 @@ function emmc_start() {
     else if ((i_emmc_manfid == 0x70) && (s_emmc_name == "W62704")) { s_res_emmc_name = "Kingston EMMC04G-W627-X03U";}
 
     // FORESEE/Longsys
-    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19B")) { s_res_emmc_name = "FORESEE/Longsys FEMDRW032G-88A19";}
-    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19C")) { s_res_emmc_name = "FORESEE/Longsys FEMDRW064G-88A19";}
-    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19D")) { s_res_emmc_name = "FORESEE/Longsys FEMDRW128G-88A19";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19B")) { s_res_emmc_name = "Foresee FEMDRW032G-88A19";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19C")) { s_res_emmc_name = "Foresee FEMDRW064G-88A19";}
+    else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "88A19D")) { s_res_emmc_name = "Foresee FEMDRW128G-88A19";}
     else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "SLD32G")) { s_res_emmc_name = "FORESEE/Longsys FSEIASLD-32G";}
     else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "SLD64G")) { s_res_emmc_name = "FORESEE/Longsys FSEIASLD-64G";}
     else if ((i_emmc_manfid == 0x88) && (s_emmc_name == "SLD128")) { s_res_emmc_name = "FORESEE/Longsys FSEIASLD-128G";}
@@ -199,8 +199,8 @@ function emmc_start() {
     else if ((i_emmc_manfid == 0xC2) && (s_emmc_name == "M08A11")) { s_res_emmc_name = "Macronix MX52ML08A11";}
 
     // FORESEE/Longsys
-    else if ((i_emmc_manfid == 0xD6) && (s_emmc_name == "58A43A")) { s_res_emmc_name = "FORESEE/Longsys FEMDRM016G-58A43";}
-    else if ((i_emmc_manfid == 0xD6) && (s_emmc_name == "88A398")) { s_res_emmc_name = "FORESEE/Longsys FEMDMW008G-88A39";}
+    else if ((i_emmc_manfid == 0xD6) && (s_emmc_name == "58A43A")) { s_res_emmc_name = "Foresee FEMDRM016G-58A43";}
+    else if ((i_emmc_manfid == 0xD6) && (s_emmc_name == "88A398")) { s_res_emmc_name = "Foresee FEMDMW008G-88A39";}
 
     // Dosilicon
     else if ((i_emmc_manfid == 0xE5) && (s_emmc_name == "03E008")) { s_res_emmc_name = "Dosilicon DS55B08D5A2-EA";}
