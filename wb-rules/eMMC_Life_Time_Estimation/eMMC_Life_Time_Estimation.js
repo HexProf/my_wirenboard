@@ -1,6 +1,6 @@
 /* 
 * (c) 2025, Evgeniy (hexprof) Sitnikov
-* v 2025.10.10
+* v 2025.11.11
 */
 
 var s_emmc_manfid = "";
@@ -147,6 +147,7 @@ function emmc_start() {
     else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J57L")) { s_res_emmc_name = "Micron MTFC32GAKAECN";}
     else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J58E")) { s_res_emmc_name = "Micron MTFC64GAJAEDN";}
     else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "R1J59E")) { s_res_emmc_name = "Micron MTFC128GAJAEDN";}
+    else if ((i_emmc_manfid == 0x13) && (s_emmc_name == "Q2J55L")) { s_res_emmc_name = "Micron MTFC8GAKAJCN-1M";}
 
     // Samsung
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "AJTD4R")) { s_res_emmc_name = "Samsung KLMAG1JETD-B041";}
