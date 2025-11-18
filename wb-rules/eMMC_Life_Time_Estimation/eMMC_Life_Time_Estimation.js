@@ -158,10 +158,11 @@ function emmc_start() {
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "MAG1DE")) { s_res_emmc_name = "Samsung KLMAG8DEHE-A101";}
 
     // SanDisk
-    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4008")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-8G";}
-    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4016")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-16G";}
-    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4032")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-32G";}
-    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4064")) { s_res_emmc_name = "SanDisk iNAND 7250 SDINBDG4-64G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4008")) { s_res_emmc_name = "SanDisk SDINBDG4-8G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4016")) { s_res_emmc_name = "SanDisk SDINBDG4-16G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4032")) { s_res_emmc_name = "SanDisk SDINBDG4-32G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4064")) { s_res_emmc_name = "SanDisk SDINBDG4-64G";}
+    else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "SEM04G")) { s_res_emmc_name = "SanDisk SDIN5C2-4G";}
 
     // Alliance
     else if ((i_emmc_manfid == 0x52) && (s_emmc_name == "AS08FC")) { s_res_emmc_name = "Alliance ASFC8G31M-51BIN";}
