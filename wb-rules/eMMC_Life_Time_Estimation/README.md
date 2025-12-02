@@ -2,7 +2,10 @@
 Wirenboard eMMC Life Time Estimation virtual device
 by Evgeniy (hexprof) Sitnikov
 
+# eMMC_Life_Time_Estimation.js
 ![](https://github.com/HexProf/my_wirenboard/blob/main/wb-rules/eMMC_Life_Time_Estimation/eMMC_Status.png)
+
+# wb-system-emmc.js
 ![](https://github.com/HexProf/my_wirenboard/blob/main/wb-rules/eMMC_Life_Time_Estimation/wb-system-emmc.png)
 ```
 cat /sys/block/mmcblk0/device/manfid        
