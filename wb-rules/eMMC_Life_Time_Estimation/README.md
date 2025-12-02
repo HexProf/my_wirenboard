@@ -1,5 +1,6 @@
 # wirenboard_emmc
 Wirenboard eMMC Life Time Estimation virtual device
+by Evgeniy (hexprof) Sitnikov
 
 ![](https://github.com/HexProf/my_wirenboard/blob/main/wb-rules/eMMC_Life_Time_Estimation/eMMC_Status.png)
 ![](https://github.com/HexProf/my_wirenboard/blob/main/wb-rules/eMMC_Life_Time_Estimation/wb-system-emmc.png)
@@ -10,7 +11,6 @@ cat /sys/block/mmcblk0/device/name
 Unsorted:
 CS004	7.3.4E/7 1D/A	NULL
 Micron Q2J55L	7.2.1A 576	NULL
-0x32    MMC64G    64G
 
 Legend:
 Device life time estimation type A: life time estimation for the MLC user partition eraseblocks, provided in steps of 10%, e.g.:
