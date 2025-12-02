@@ -82,6 +82,7 @@ function emmc_start() {
           case 0x13: { s_emmc_manfid = "Micron"; break; };
           case 0x15: { s_emmc_manfid = "Samsung/SanDisk/LG"; break; };
           case 0x2C: { s_emmc_manfid = "Kingston"; break; };
+          case 0x32: { s_emmc_manfid = "Phison"; break; };
           case 0x37: { s_emmc_manfid = "KingMax"; break; };
           case 0x44: { s_emmc_manfid = "ATP"; break; };
           case 0x45: { s_emmc_manfid = "SanDisk"; break; };
@@ -157,6 +158,9 @@ function emmc_start() {
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "M8G1DE")) { s_res_emmc_name = "Samsung KLM8G4DEHE-B101";}
     else if ((i_emmc_manfid == 0x15) && (s_emmc_name == "MAG1DE")) { s_res_emmc_name = "Samsung KLMAG8DEHE-A101";}
 
+	// Phison
+	else if ((i_emmc_manfid == 0x32) && (s_emmc_name == "MMC64G")) { s_res_emmc_name = "Phison PTE4A0TN-64GE";}
+		
     // SanDisk
     else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4008")) { s_res_emmc_name = "SanDisk SDINBDG4-8G";}
     else if ((i_emmc_manfid == 0x45) && (s_emmc_name == "DG4016")) { s_res_emmc_name = "SanDisk SDINBDG4-16G";}
